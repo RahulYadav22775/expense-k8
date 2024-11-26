@@ -36,7 +36,7 @@ spec:
         image: gopichand9534/backend:v1
         envFrom:
         - configMapRef:
-          name: backend-config
+            name: backend-config
 
 
 ---
