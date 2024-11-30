@@ -26,13 +26,7 @@ spec:
       containers:
       - name: mysql
         image: joindevops/mysql:v1
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 100m
-            memory: 140Mi
+        
 
 ---
 kind: Service
