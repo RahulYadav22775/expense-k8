@@ -40,7 +40,7 @@ spec:
             memory: 128Mi
           limits:
             cpu: 100m
-            memory: 140Mi
+            memory: 128Mi
         envFrom:
         - configMapRef:
             name: backend-config
