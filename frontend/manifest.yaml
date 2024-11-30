@@ -24,6 +24,7 @@ spec:
       containers:
       - name: frontend
         image: joindevops/frontend:v1
+        # limits should be greater than or equal to requests
         resources:
           requests:
             cpu: 100m
