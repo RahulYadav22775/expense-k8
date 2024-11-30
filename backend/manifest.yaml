@@ -34,6 +34,13 @@ spec:
       containers:
       - name: backend
         image: gopichand9534/backend:v1
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 100m
+            memory: 140Mi
         envFrom:
         - configMapRef:
             name: backend-config
