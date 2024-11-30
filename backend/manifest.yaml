@@ -76,4 +76,4 @@ spec:
    name: backend
  minReplicas: 1
  maxReplicas: 10
- targetCPUUtilizationPercentage: 75 #usually 75 in real envi
+ targetCPUUtilizationPercentage: 15 #usually 75 in real envi
