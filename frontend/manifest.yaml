@@ -127,12 +127,12 @@ spec:
             cpu: 100m
             memory: 128Mi
         volumeMounts:
-        - name: nginx.conf
+        - name: nginx-conf
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
           readOnly: true # file cannot be modified except read
       volumes:
-      - name: nginx.conf
+      - name: nginx-conf
         configMap: 
           name: frontend
           items:
