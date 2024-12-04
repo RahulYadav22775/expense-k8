@@ -130,7 +130,7 @@ spec:
         - name: nginx.conf
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
-          readOnly: true 
+          readOnly: true # file cannot be modified except read
       volumes:
       - name: nginx.conf
         configMap: 
