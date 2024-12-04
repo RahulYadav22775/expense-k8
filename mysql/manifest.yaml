@@ -26,6 +26,17 @@ spec:
       containers:
       - name: mysql
         image: joindevops/mysql:v1
+        readinessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 15 #waits till 15 sec and hecks whether ready or not
+          periodSeconds: 10 # checks after every 10 sec
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          
         
 
 ---
