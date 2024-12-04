@@ -1,38 +1,36 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: backend-config
+  name: backend
   namespace: expense
 data:
-   DB_HOST: mysql
+  DB_HOST: mysql
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend
   namespace: expense
-  labels:  # these are replicaset labels
+  labels:
     app: backend
     tier: api
     project: expense
 spec:
-  # modify replicas according to your case
   replicas: 2
   selector:
-    matchLabels:   # these are used to select the pod to create replicas
+    matchLabels:
       app: backend
       tier: api
       project: expense
-  #this is pod defination    
   template:
     metadata:
-      labels:  # these are pod labels
-         app: backend
-         tier: api
-         project: expense
+      labels:
+        app: backend
+        tier: api
+        project: expense
     spec:
       initContainers:
-      - name: init-myservice
+      - name: mysql-check
         image: busybox:1.28
         command: ['sh', '-c', "until nslookup mysql; do echo waiting for myservice; sleep 2; done"]
       containers:
@@ -42,26 +40,24 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
+          # limits is greater than or equal to requests
           limits:
             cpu: 100m
             memory: 128Mi
         envFrom:
         - configMapRef:
-            name: backend-config
+            name: backend
         readinessProbe:
           tcpSocket:
-            port: 3306
-          initialDelaySeconds: 15 #waits till 15 sec and hecks whether ready or not
-          periodSeconds: 10 # checks after every 10 sec
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 10
         livenessProbe:
           httpGet:
             path: /health
             port: 8080
           initialDelaySeconds: 3
           periodSeconds: 3
-          
-
-
 ---
 kind: Service
 apiVersion: v1
@@ -70,15 +66,14 @@ metadata:
   namespace: expense
 spec:
   selector:
-     app: backend
-     tier: api
-     project: expense
+    app: backend
+    tier: api
+    project: expense
   ports:
   - name: backend-port
     protocol: TCP
     port: 8080 # service port
     targetPort: 8080 # container port
-
 ---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
@@ -92,4 +87,4 @@ spec:
    name: backend
  minReplicas: 1
  maxReplicas: 10
- targetCPUUtilizationPercentage: 15 #usually 75 in real envi
+ targetCPUUtilizationPercentage: 15 # usually 75 in real environment
